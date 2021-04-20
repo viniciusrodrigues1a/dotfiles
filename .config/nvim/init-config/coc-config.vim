@@ -2,7 +2,8 @@ let g:coc_global_extensions = [
   \ 'coc-tsserver',
   \ 'coc-eslint',
   \ 'coc-json',
-  \ 'coc-git'
+  \ 'coc-git',
+  \ 'coc-discord-rpc'
   \ ]
 
 " TextEdit might fail if hidden is not set.
