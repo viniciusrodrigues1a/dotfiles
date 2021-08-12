@@ -1,18 +1,11 @@
 #!/usr/bin/env sh
 
 restow() {
-  for f in *; do
-    if [ -d "$f" ]; then
-      echo "\n$f\n"
-      stow -vRt "$HOME" "$f" $1
-    fi
-  done
-
-  echo -n "\n"
+  ls -F | grep / | xargs stow $1 -vRt "$HOME"
 }
 
 ask_confirmation() {
-  echo -n "-> Make changes to filesystem? (Y/n): "
+  echo -n "\n-> Make changes to filesystem? (Y/n): "
   read answer
 
   if echo "$answer" | grep [Yy]; then
@@ -24,7 +17,7 @@ ask_confirmation() {
 }
 
 main() {
-  restow -n
+  restow --simulate
   ask_confirmation
   restow
 
