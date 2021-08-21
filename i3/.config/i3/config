@@ -17,7 +17,7 @@ focus_follows_mouse no
 focus_on_window_activation focus
 
 # Background
-exec feh --bg-fill $HOME/.config/i3/wallpapers/helvegen.jpg
+exec feh --bg-fill $HOME/.config/i3/wallpapers/helvegen.png
 # exec --no-startup-id xwinwrap -ov -ni -g 1600x900 -- mpv --fullscreen --loop-file --no-audio --no-input-default-bindings -wid WID $HOME/.config/i3/gifs/training.gif
 # Cycle through wallpapers
 ##exec --no-startup-id $HOME/.config/i3/scripts/wallpapers.py $HOME/.config/i3/wallpapers/ 500
