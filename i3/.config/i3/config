@@ -17,24 +17,28 @@ focus_follows_mouse no
 focus_on_window_activation focus
 
 # Background
-exec feh --bg-fill $HOME/.config/i3/wallpapers/helvegen.png
-# exec --no-startup-id xwinwrap -ov -ni -g 1600x900 -- mpv --fullscreen --loop-file --no-audio --no-input-default-bindings -wid WID $HOME/.config/i3/gifs/training.gif
+#exec feh --bg-fill $HOME/.config/i3/wallpapers/helvegen.png
+exec --no-startup-id xwinwrap -ov -ni -g 1600x900 -- mpv --fullscreen --loop-file --no-audio --no-input-default-bindings -wid WID $HOME/.config/i3/gifs/training.gif
 # Cycle through wallpapers
 ##exec --no-startup-id $HOME/.config/i3/scripts/wallpapers.py $HOME/.config/i3/wallpapers/ 500
 
 # Launch polybar
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 
-# Launch compton
-exec --no-startup-id compton --config $HOME/.config/compton/compton.conf
+# Launch compositor
+#exec --no-startup-id compton --config $HOME/.config/compton/compton.conf
+exec --no-startup-id picom --config $HOME/.config/picom.conf
 
 # Keybindings
 bindsym $mod+Return exec i3-sensible-terminal
-bindsym $mod+Shift+Return exec gnome-terminal -t "floating"
 bindsym $mod+Shift+q kill
-# Start menus
-bindsym $mod+d exec rofi -no-config -no-lazy-grab -show drun -modi drun -theme ~/.config/polybar/scripts/rofi/launcher.rasi
+# Rofi menus
+bindsym $mod+d exec $HOME/.config/rofi/launchers/launcher.sh
 bindsym $mod+Shift+d exec dmenu_run -b -i -p "Search "
+# Power menu
+bindsym $mod+Ctrl+p exec $HOME/.config/rofi/powermenu/powermenu.sh
+# Screenshot menu
+bindsym --release Print exec $HOME/.config/rofi/applets/screenshot.sh
 # Changing focus
 bindsym $mod+h focus left
 bindsym $mod+j focus down
@@ -88,28 +92,18 @@ bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r restart
 # Exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
-# Open power menu
-bindsym $mod+Ctrl+p exec $HOME/.config/polybar/scripts/powermenu.sh
 
-# Screenshot
-# Multi-screen screenshots with scrot
-bindsym --release Print exec scrot 'screenshot_%Y%m%d_%H%M%S.png' -e 'mkdir -p ~/Pictures/screenshots && mv $f ~/Pictures/screenshots && xclip -selection clipboard -t image/png -i ~/Pictures/screenshots/`ls -1 -t ~/Pictures/screenshots | head -1`' # All screens
-# Area selection screenshots
-bindsym --release Shift+Print exec scrot -s 'screenshot_%Y%m%d_%H%M%S.png' -e 'mkdir -p ~/Pictures/screenshots && mv $f ~/Pictures/screenshots && xclip -selection clipboard -t image/png -i ~/Pictures/screenshots/`ls -1 -t ~/Pictures/screenshots | head -1`' # Area selection
-
-# Toggle keyboard layout
-bindsym $mod+x exec --no-startup-id $HOME/.config/i3/scripts/toggle_keyboard_layout.sh
+# Cycle keyboard layouts
+bindsym $mod+x exec --no-startup-id $HOME/.config/i3/scripts/cycle_keyboard_layout.sh
 
 # Make new windows adhere to a fibonaccy layout
 for_window [class=".*"] exec --no-startup-id $HOME/.config/i3/scripts/fibonacci_layout.py
 
-for_window [title="floating"] floating enable
-
 # Gaps
 for_window [class=".*"] border pixel 2
 gaps inner 20
-##smart_gaps on
-##smart_borders no_gaps
+smart_gaps on
+smart_borders no_gaps
 
 # Border colors
 # class                 border  backgr. text    indicator child_border
@@ -119,30 +113,3 @@ client.unfocused        #333333 #222222 #888888 #7f65e1ff   #7f65e1ff
 client.urgent           #2f343a #900000 #ffffff #7f65e1ff   #7f65e1ff
 client.placeholder      #000000 #0c0c0c #ffffff #7f65e1ff   #7f65e1ff
 client.background       #ffffff
-
-# Assign workspaces
-# Workspace 1
-assign [class="Firefox"] $ws1
-assign [class="qutebrowser"] $ws1
-# Workspace 2
-assign [title="Terminal"] $ws2
-# Workspace 3
-for_window [title="Neovim"] move workspace 3, focus
-assign [class="Code"] $ws3
-# Workspace 4
-assign [title="Emulator"] $ws4
-for_window [title="Emulator"] floating enable, move position bottom left
-# Workspace 5
-assign [class="beekeeper-studio"] $ws5
-assign [class="Insomnia"] $ws5
-# Workspace 6
-assign [class="Steam"] $ws6
-for_window [class="Steam"] layout tabbed
-# Workspace 7
-assign [class="discord"] $ws7
-# Workspace 8
-assign [class="Com.github.johnfactotum.Foliate"] $ws8
-# Workspace 9
-assign [class="jetbrains-studio"] $ws9
-# Workspace 10
-assign [class="Lotion"] $ws10

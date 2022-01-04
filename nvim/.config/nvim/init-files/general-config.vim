@@ -28,7 +28,7 @@ set nowrap
 
 " Display different types of white spaces.
 set list
-set listchars=tab:│·,trail:·,eol:⤶,extends:›,precedes:‹,nbsp:~
+set listchars=tab:│·,trail:·,extends:›,precedes:‹,nbsp:~
 set showbreak=⤷\
 
 " Easy window navigation
