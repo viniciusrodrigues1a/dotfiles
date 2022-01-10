@@ -61,6 +61,8 @@ bindsym $mod+e layout toggle split
 bindsym $mod+Shift+space floating toggle
 # Toggle sticky mode for 1600x900 res
 bindsym $mod+Shift+s floating toggle, sticky toggle, resize set 491 277, move window to position 1107 px 621 px
+# Hide polybar
+bindsym $mod+Shift+p exec polybar-msg cmd toggle
 # Change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
 # Switch to workspace
