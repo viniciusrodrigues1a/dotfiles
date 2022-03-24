@@ -17,8 +17,8 @@ focus_follows_mouse no
 focus_on_window_activation focus
 
 # Background
-#exec feh --bg-fill $HOME/.config/i3/wallpapers/helvegen.png
-exec --no-startup-id xwinwrap -ov -ni -g 1600x900 -- mpv --fullscreen --loop-file --no-audio --no-input-default-bindings -wid WID $HOME/.config/i3/gifs/training.gif
+exec feh --bg-fill $HOME/.config/i3/wallpapers/wallhaven.jpg
+#exec --no-startup-id xwinwrap -ov -ni -g 1600x900 -- mpv --fullscreen --loop-file --no-audio --no-input-default-bindings -wid WID $HOME/.config/i3/gifs/training.gif
 # Cycle through wallpapers
 ##exec --no-startup-id $HOME/.config/i3/scripts/wallpapers.py $HOME/.config/i3/wallpapers/ 500
 
@@ -62,7 +62,7 @@ bindsym $mod+Shift+space floating toggle
 # Toggle sticky mode for 1600x900 res
 bindsym $mod+Shift+s floating toggle, sticky toggle, resize set 491 277, move window to position 1107 px 621 px
 # Hide polybar
-bindsym $mod+Shift+p exec polybar-msg cmd toggle
+bindsym $mod+Shift+p exec --no-startup-id polybar-msg cmd toggle
 # Change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
 # Switch to workspace
@@ -102,9 +102,9 @@ bindsym $mod+x exec --no-startup-id $HOME/.config/i3/scripts/cycle_keyboard_layo
 for_window [class=".*"] exec --no-startup-id $HOME/.config/i3/scripts/fibonacci_layout.py
 
 # Gaps
-for_window [class=".*"] border pixel 2
-gaps inner 20
-smart_gaps on
+for_window [class=".*"] border pixel 0
+gaps inner 10
+#smart_gaps on
 smart_borders no_gaps
 
 # Border colors

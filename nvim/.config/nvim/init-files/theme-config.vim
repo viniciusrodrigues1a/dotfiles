@@ -20,8 +20,8 @@ endif
 " colorscheme OceanicNext
 " colorscheme nord
 " colorscheme gruvbox
-" colorscheme onedark
-colorscheme dracula
+colorscheme onedark
+" colorscheme dracula
 " colorscheme darkblue
 " colorscheme industry
 " colorscheme tokyonight

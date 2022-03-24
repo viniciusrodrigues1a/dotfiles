@@ -79,3 +79,6 @@ inoremap <c-k> <esc>ml :m .-2<CR>==`la
 inoremap <c-j> <esc>ml :m .+1<CR>==`la
 nnoremap <leader>j :m .+1<CR>==
 nnoremap <leader>k :m .-2<CR>==
+
+" Terminal mappings
+:tnoremap <Esc> <C-\><C-n>
