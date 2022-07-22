@@ -22,6 +22,7 @@ main() {
   restow
 
   echo "Finished stowing packages..."
+  echo "You need to install the following packages: picom alacritty rofi polybar nvim scrot maim"
   exit 0
 }
 
