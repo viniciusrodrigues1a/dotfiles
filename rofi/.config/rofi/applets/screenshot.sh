@@ -25,7 +25,7 @@ chosen="$(echo -e "$options" | $rofi_command -p '' -dmenu -selected-row 1)"
 case $chosen in
     $screen)
 		if [[ -f /usr/bin/scrot ]]; then
-			sleep 1; scrot 'Screenshot_%Y-%m-%d-%S_$wx$h.png' -e 'mv $f $$(xdg-user-dir PICTURES) ; viewnior $$(xdg-user-dir PICTURES)/$f'
+			sleep 1; scrot 'Screenshot_%Y-%m-%d-%S_$wx$h.png' -e 'mv $f $$(xdg-user-dir PICTURES) ; xdg-open $$(xdg-user-dir PICTURES)/$f'
 		else
 			msg
 		fi
@@ -33,14 +33,14 @@ case $chosen in
     $area)
 		if [[ -f /usr/bin/scrot ]]; then
 			filename="$(date +%s).png"
-			maim -s "$(xdg-user-dir PICTURES)/$filename" && viewnior "$(xdg-user-dir PICTURES)/$filename"
+			maim -s "$(xdg-user-dir PICTURES)/$filename" && xdg-open "$(xdg-user-dir PICTURES)/$filename"
 		else
 			msg
 		fi
         ;;
     $window)
 		if [[ -f /usr/bin/scrot ]]; then
-			sleep 1; scrot -u 'Screenshot_%Y-%m-%d-%S_$wx$h.png' -e 'mv $f $$(xdg-user-dir PICTURES) ; viewnior $$(xdg-user-dir PICTURES)/$f'
+			sleep 1; scrot -u 'Screenshot_%Y-%m-%d-%S_$wx$h.png' -e 'mv $f $$(xdg-user-dir PICTURES) ; xdg-open $$(xdg-user-dir PICTURES)/$f'
 		else
 			msg
 		fi
