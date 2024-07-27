@@ -1,7 +1,7 @@
-local nnoremap = require("config.keymap").nnoremap
-local inoremap = require("config.keymap").inoremap
-local vnoremap = require("config.keymap").vnoremap
-local tnoremap = require("config.keymap").tnoremap
+local nnoremap = require("core.keymaps.util").nnoremap
+local inoremap = require("core.keymaps.util").inoremap
+local vnoremap = require("core.keymaps.util").vnoremap
+local tnoremap = require("core.keymaps.util").tnoremap
 
 -- Easy window navigation
 nnoremap("<C-h>", "<C-w>h")
@@ -36,4 +36,4 @@ nnoremap("<leader>k", ":m .-2<CR>==")
 nnoremap("<leader>j", ":m .+1<CR>==")
 
 -- Terminal mappings
-tnoremap("<Esc>", "<C-\\><C-n")
+tnoremap("<Esc>", "<C-\\><C-n>")
