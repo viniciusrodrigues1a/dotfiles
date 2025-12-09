@@ -1,16 +1,12 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# ------------------------------------------ #
-# Cycles through US and BR  keyboard layouts #
-# ------------------------------------------ #
+CURRENT_LAYOUT=$(setxkbmap -query | grep "layout" | tr -d " " | cut -d ":" -f 2)
 
-OUTPUT=$(setxkbmap -query | grep layout | grep -o ":.*" | tr -d ":, ")
-LAYOUTS=("br" "us")
-
-if [ $OUTPUT = "br" ]; then
-  setxkbmap us
-elif [ $OUTPUT = "us" ]; then
-  setxkbmap br
+echo $CURRENT_LAYOUT
+if [ "$CURRENT_LAYOUT" = "us" ]; then
+	setxkbmap br
+    notify-send -r 909090 "Keyboard Layout" "🇧🇷 BR"
 else
-  setxkbmap us
+	setxkbmap us
+    notify-send -r 909090 "Keyboard Layout" "🇺🇸 US"
 fi

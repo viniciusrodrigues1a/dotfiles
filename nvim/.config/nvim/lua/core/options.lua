@@ -36,6 +36,20 @@ vim.g.mapleader = " "
 -- netrw config
 vim.g.netrw_bufsettings = "noma nomod nu nobl nowrap ro"
 vim.g.netrw_banner = 0
+vim.g.netrw_winsize = 25
 -- do not create entries in the .netrwhist file
 vim.g.netrw_dirhistmax = 0
 vim.cmd("autocmd FileType netrw set nolist")
+
+-- Set Lex to open in the current file's directory
+vim.api.nvim_create_user_command("Lex", function()
+	vim.cmd("Lexplore " .. vim.fn.expand("%:p:h"))
+end, {})
+
+-- Set wrap for .md files
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "markdown",
+	callback = function()
+		vim.opt_local.wrap = true
+	end,
+})

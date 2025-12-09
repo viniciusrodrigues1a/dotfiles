@@ -1,5 +1,21 @@
 set $mod Mod4
-set $refresh_i3status killall -SIGUSR1 i3status
+
+font pango:monospace 10
+
+set $term kitty
+set $menu rofi -show drun
+set $printscr exec maim -s | xclip -selection clipboard -t image/png
+set $toggle_keyboard $HOME/.config/i3/scripts/cycle_keyboard_layout.sh
+
+exec --no-startup-id numlockx on
+exec --no-startup-id dunst
+
+# Home row direction keys, like vim
+set $left h
+set $down j
+set $up k
+set $right l
+
 set $ws0 "0"
 set $ws1 "1"
 set $ws2 "2"
@@ -10,62 +26,22 @@ set $ws6 "6"
 set $ws7 "7"
 set $ws8 "8"
 set $ws9 "9"
-font pango:monospace 8
-floating_modifier $mod
-workspace_auto_back_and_forth yes
+
 focus_follows_mouse no
-focus_on_window_activation focus
-
-# Background
-exec feh --bg-fill $HOME/.config/i3/wallpapers/wallhaven.jpg
-#exec --no-startup-id xwinwrap -ov -ni -g 2560x1440 -- mpv --fullscreen --loop-file --no-audio --no-input-default-bindings -wid WID $HOME/.config/i3/gifs/training.gif
-# Cycle through wallpapers
-##exec --no-startup-id $HOME/.config/i3/scripts/wallpapers.py $HOME/.config/i3/wallpapers/ 500
-
-# Launch polybar
-exec_always --no-startup-id $HOME/.config/polybar/launch.sh
-
-# Launch compositor
-#exec --no-startup-id compton --config $HOME/.config/compton/compton.conf
-# Use pijulius' picom fork
-exec --no-startup-id picom -b --animations --animation-with-window-mass 0.5 --animation-for-open-window zoom --animation-stiffiness --config $HOME/.config/picom.conf
+workspace_auto_back_and_forth yes
+floating_modifier $mod
 
 # Keybindings
-bindsym $mod+Return exec --no-startup-id alacritty
-bindsym $mod+Shift+q kill
-# Rofi menus
-bindsym $mod+d exec $HOME/.config/rofi/launchers/launcher.sh
-bindsym $mod+Shift+d exec dmenu_run -b -i -p "Search"
-# Power menu
-bindsym $mod+Ctrl+p exec $HOME/.config/rofi/powermenu/powermenu.sh
-# Screenshot menu
-bindsym --release Print exec $HOME/.config/rofi/applets/screenshot.sh
-# Changing focus
-bindsym $mod+h focus left
-bindsym $mod+j focus down
-bindsym $mod+k focus up
-bindsym $mod+l focus right
-# Moving window around
-bindsym $mod+Shift+h move left
-bindsym $mod+Shift+j move down
-bindsym $mod+Shift+k move up
-bindsym $mod+Shift+l move right
-# Splits and full screen
-bindsym $mod+s split h
-bindsym $mod+v split v
-bindsym $mod+f fullscreen toggle
-# Change container layout
-bindsym $mod+w layout stacking
-bindsym $mod+t layout tabbed
-bindsym $mod+e layout toggle split
-# Toggle tiling / floating mode
-bindsym $mod+Shift+space floating toggle
-# Toggle sticky mode for 2560x1440 res
-bindsym $mod+Shift+s floating toggle, sticky toggle, resize set 786 443, move window to position 1774 px 996 px
-# Hide polybar
-bindsym $mod+Shift+p exec --no-startup-id polybar-msg cmd toggle
-# Change focus between tiling / floating windows
-bindsym $mod+space focus mode_toggle
+bindsym $mod+Return exec $term
+bindsym $mod+m exec $menu
+
+bindsym --release Print exec $printscr
+bindsym --release $mod+Shift+S exec $printscr
+
+bindsym $mod+space exec --no-startup-id $toggle_keyboard
+
+bindsym $mod+q kill
+
 # Switch to workspace
 bindsym $mod+0 workspace number $ws0
 bindsym $mod+1 workspace number $ws1
@@ -88,31 +64,203 @@ bindsym $mod+Shift+6 move container to workspace number $ws6
 bindsym $mod+Shift+7 move container to workspace number $ws7
 bindsym $mod+Shift+8 move container to workspace number $ws8
 bindsym $mod+Shift+9 move container to workspace number $ws9
+# Move whole workspace to another workspace
+bindsym $mod+Shift+Ctrl+0 focus parent; move container to workspace number $ws0
+bindsym $mod+Shift+Ctrl+1 focus parent; move container to workspace number $ws1
+bindsym $mod+Shift+Ctrl+2 focus parent; move container to workspace number $ws2
+bindsym $mod+Shift+Ctrl+3 focus parent; move container to workspace number $ws3
+bindsym $mod+Shift+Ctrl+4 focus parent; move container to workspace number $ws4
+bindsym $mod+Shift+Ctrl+5 focus parent; move container to workspace number $ws5
+bindsym $mod+Shift+Ctrl+6 focus parent; move container to workspace number $ws6
+bindsym $mod+Shift+Ctrl+7 focus parent; move container to workspace number $ws7
+bindsym $mod+Shift+Ctrl+8 focus parent; move container to workspace number $ws8
+bindsym $mod+Shift+Ctrl+9 focus parent; move container to workspace number $ws9
 
-# Reload the configuration file
+# Changing focus
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+# Moving window around
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+bindsym $mod+f fullscreen toggle
+
+bindsym $mod+w layout stacking
+bindsym $mod+t layout tabbed
+bindsym $mod+e layout toggle split
+bindsym $mod+b split h
+bindsym $mod+v split v
+# Toggle tiling / floating mode
+bindsym $mod+Shift+space floating toggle
+
+# Resizing containers:
+mode "resize" {
+    bindsym $left resize shrink width 10px
+    bindsym $right resize grow width 10px
+    bindsym $down resize grow height 10px
+    bindsym $up resize shrink height 10px
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+bindsym $mod+r mode "resize"
+
+# Scratchpad:
+#
+# I3 has a "scratchpad", which is a bag of holding for windows.
+# You can send windows there and get them back later.
+
+# Move the currently focused window to the scratchpad
+bindsym $mod+Shift+o move scratchpad
+
+# Show the next scratchpad window or hide the focused scratchpad window.
+# If there are multiple scratchpad windows, this command cycles through them.
+bindsym $mod+o scratchpad show
+
+# Gaps and borders
+# gaps inner 10
+for_window [class=".*"] border pixel 2
+
+# Monitors
+
+exec --no-startup-id xrandr --output DP-2 --primary --mode 2560x1440 --pos 1920x0 && xrandr --output eDP-1 --mode 1920x1080 --pos 0x0
+
+workspace 1 output DP-2
+workspace 2 output DP-2
+workspace 3 output DP-2
+workspace 4 output DP-2
+workspace 5 output DP-2
+workspace 6 output DP-2
+workspace 7 output DP-2
+workspace 8 output DP-2
+workspace 9 output DP-2
+workspace 0 output eDP-1
+
+# Touchpad
+# input "1267:12522:ELAN0B00:00_04F3:30EA_Touchpad" {
+#	tap enabled
+#	natural_scroll enabled
+#
+
+# for_window [app_id="org.gnome.Calculator"] floating enable
+# 
+# Media keys
+bindsym XF86Calculator exec gnome-calculator
+
+bindsym XF86MonBrightnessUp exec brightnessctl set +10%
+bindsym XF86MonBrightnessDown exec brightnessctl set 10%-
+
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
+
+# Background
+# exec --no-startup-id feh --bg-scale ~/Pictures/bg.jpg
+
+
+# i3 config file (v4)
+#
+# Please see https://i3wm.org/docs/userguide.html for a complete reference!
+#
+# This config file uses keycodes (bindsym) and was written for the QWERTY
+# layout.
+#
+# To get a config file with the same key positions, but for your current
+# layout, use the i3-config-wizard
+#
+
+# Font for window titles. Will also be used by the bar unless a different font
+# is used in the bar {} block below.
+# font pango:monospace 8
+
+# This font is widely installed, provides lots of unicode glyphs, right-to-left
+# text rendering and scalability on retina/hidpi displays (thanks to pango).
+#font pango:DejaVu Sans Mono 8
+
+# Start XDG autostart .desktop files using dex. See also
+# https://wiki.archlinux.org/index.php/XDG_Autostart
+exec --no-startup-id dex --autostart --environment i3
+
+# The combination of xss-lock, nm-applet and pactl is a popular choice, so
+# they are included here as an example. Modify as you see fit.
+
+# xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
+# screen before suspend. Use loginctl lock-session to lock your screen.
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+
+# NetworkManager is the most popular way to manage wireless networks on Linux,
+# and nm-applet is a desktop environment-independent system tray GUI for it.
+exec --no-startup-id nm-applet
+
+# Use pactl to adjust volume in PulseAudio.
+set $refresh_i3status killall -SIGUSR1 i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+
+# move tiling windows via drag & drop by left-clicking into the title bar,
+# or left-clicking anywhere into the window while holding the floating modifier.
+tiling_drag modifier titlebar
+
+# start dmenu (a program launcher)
+# bindsym $mod+d exec --no-startup-id dmenu_run
+# A more modern dmenu replacement is rofi:
+# bindsym $mod+d exec "rofi -modi drun,run -show drun"
+# There also is i3-dmenu-desktop which only displays applications shipping a
+# .desktop file. It is a wrapper around dmenu, so you need that installed.
+# bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
+
+bindsym $mod+p focus parent
+bindsym $mod+d focus child
+
+# move the currently focused window to the scratchpad
+bindsym $mod+Shift+minus move scratchpad
+
+# Show the next scratchpad window or hide the focused scratchpad window.
+# If there are multiple scratchpad windows, this command cycles through them.
+bindsym $mod+minus scratchpad show
+
+# Define names for default workspaces for which we configure key bindings later on.
+# We use variables to avoid repeating the names in multiple places.
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws10 "10"
+
+# reload the configuration file
 bindsym $mod+Shift+c reload
-# Restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
-# Exit i3 (logs you out of your X session)
+# exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
-# Cycle through keyboard layouts
-bindsym $mod+x exec --no-startup-id $HOME/.config/i3/scripts/cycle_keyboard_layout.sh
+# Start i3bar to display a workspace bar (plus the system information i3status
+# finds out, if available)
+bar {
+        status_command i3status
+}
 
-# Make new windows adhere to a fibonaccy layout
-#for_window [class=".*"] exec --no-startup-id $HOME/.config/i3/scripts/fibonacci_layout.py
+#######################################################################
+# automatically start i3-config-wizard to offer the user to create a
+# keysym-based config which used their favorite modifier (alt or windows)
+#
+# i3-config-wizard will not launch if there already is a config file
+# in ~/.config/i3/config (or $XDG_CONFIG_HOME/i3/config if set) or
+# ~/.i3/config.
+#
+# Please remove the following exec line:
+#######################################################################
+exec i3-config-wizard
 
-# Gaps
-for_window [class=".*"] border pixel 0
-gaps inner 10
-#smart_gaps on
-smart_borders no_gaps
 
-# Border colors
-# class                 border  backgr. text    indicator child_border
-client.focused          #ff0000 #285577 #ffffff #7f65e1ff   #7f65e1ff
-client.focused_inactive #333333 #5f676a #ffffff #7f65e1ff   #7f65e1ff
-client.unfocused        #333333 #222222 #888888 #7f65e1ff   #7f65e1ff
-client.urgent           #2f343a #900000 #ffffff #7f65e1ff   #7f65e1ff
-client.placeholder      #000000 #0c0c0c #ffffff #7f65e1ff   #7f65e1ff
-client.background       #ffffff
